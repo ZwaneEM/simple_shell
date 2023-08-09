@@ -3,5 +3,5 @@ int main()
 {
      printf("Hello World \n");
      printf("Meet Rosina, and Mthokozisi /n");
-     return 0;
+     return (0);
 }
