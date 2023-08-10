@@ -1,15 +1,22 @@
-#include "main.h"
+#include "simpleShell.h"
+
+/**
+* main- prompts user to enter a command
+*    prompt displayed in a loop while
+*    the command is being executed
+*
+* Return: command, or prompt again
+*/
 
 int main(int n, char **argv)
 {
-    char *prompt;
-    prompt = "(Enter command:) $ ";
+    char *command;
+    prompt = "(Enter a command:) $ ";
     
     char *linepointer2 = NULL;
-    ssize_t numChars;
     size_t m = 0;
     char *linepointer1 = NULL;
-    
+    ssize_t numChars;
 
     /* declaring void variables */
     (void)n;
