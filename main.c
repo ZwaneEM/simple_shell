@@ -5,10 +5,11 @@ int main(int n, char **argv)
     char *prompt;
     prompt = "(Enter command:) $ ";
     
-    char *linepointer1 = NULL;
     char *linepointer2 = NULL;
-    size_t m = 0;
     ssize_t numChars;
+    size_t m = 0;
+    char *linepointer1 = NULL;
+    
 
     /* declaring void variables */
     (void)n;
