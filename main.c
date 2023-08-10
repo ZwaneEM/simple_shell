@@ -30,7 +30,7 @@ int main(int n, char **argv)
         linepointer2 = malloc(sizeof(char) * numChars);
         if (linepointer2 == NULL)
         {
-            perror("tsh: memory allocation error");
+            perror("ERROR: MEMORY ALLOCATION!");
             return (-1);
         }
         
