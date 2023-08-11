@@ -1,18 +1,16 @@
 #include "main.h"
 
-void execmd(char **argv)
+void exe_command(char **argv, char *erro)
 {
-    char *command = NULL;
+
+//   char *command = NULL;
 
     if (argv){
-        /* get the command */
-        command = argv[0];
 
-        /* execute the command with execve */
-        if (execve(command, argv, NULL) == -1)
-	{
-            perror("Error:");
-        };
+        if (execve(argv[0], argv, NULL) == -1){
+            perror(erro);
+        }
+
     }
 
 }

@@ -1,70 +1,76 @@
 #include "main.h"
 
-int main(int ac, char **argv){
-    char *prompt = "(Eshell) $ ";
-    char *lineptr = NULL, *lineptr_copy = NULL;
-    size_t n = 0;
-    ssize_t nchars_read;
-    const char *delim = " \n";
-    int num_tokens = 0;
-    char *token;
-    int i;
+char **arr_make(char *str);
 
-    /* declaring void variables */
-    (void)ac;
+extern char **environ;
+/**
+ *
+ *
+ */
+int main(int argc, char **argv)
+{
 
-    /* Create a loop for the shell's prompt */
-    while (1) {
-        printf("%s", prompt);
-        nchars_read = getline(&lineptr, &n, stdin);
-        /* check if the getline function failed or reached EOF or user use CTRL + D */ 
-        if (nchars_read == -1){
-            printf("Exiting shell....\n");
-            return (-1);
-        }
+	/* declaration and initilization */
+	char *prompt = "#ourshell $ ";
+	char *input = NULL;
+	ssize_t nchar;
+	char **av = argv;
+	int ac = argc;
+	size_t len = 0;
+	int i = 0;
+	pid_t pid;
 
-        /* allocate space for a copy of the lineptr */
-        lineptr_copy = malloc(sizeof(char) * nchars_read);
-        if (lineptr_copy== NULL){
-            perror("tsh: memory allocation error");
-            return (-1);
-        }
-        /* copy lineptr to lineptr_copy */
-        strcpy(lineptr_copy, lineptr);
-
-        /********** split the string (lineptr) into an array of words ********/
-        /* calculate the total number of tokens */
-        token = strtok(lineptr, delim);
-
-        while (token != NULL){
-            num_tokens++;
-            token = strtok(NULL, delim);
-        }
-        num_tokens++;
-
-        /* Allocate space to hold the array of strings */
-        argv = malloc(sizeof(char *) * num_tokens);
-
-        /* Store each token in the argv array */
-        token = strtok(lineptr_copy, delim);
-
-        for (i = 0; token != NULL; i++){
-            argv[i] = malloc(sizeof(char) * strlen(token));
-            strcpy(argv[i], token);
-
-            token = strtok(NULL, delim);
-        }
-        argv[i] = NULL;
-
-        /* execute the command */
-        execmd(argv);
-
-    } 
+	(void)argc;
 
 
-    /* free up allocated memory */ 
-    free(lineptr_copy);
-    free(lineptr);
+	printf("%s", prompt); /*prompt the user*/
 
-    return (0);
-}
+	nchar = getline(&input, &len, stdin);
+	if (nchar == -1)
+		return (0);
+
+	argv = arr_make(input);
+	
+	pid = fork();
+
+	if (pid == -1)
+		return (0);
+
+	
+	if (pid == 0)
+	{
+		exe_command(argv, av[0]);
+	}
+	else
+	{
+		wait(NULL);
+	}
+
+	return main(ac, av);
+
+}	
+
+
+/**
+ * arr_make - takes user input and turn it to
+ * array of words
+ * @str: The string to process
+ * Return: pointer to array of pointers
+ */
+char **arr_make(char *str)
+{
+	const char *delim = " \n";
+	char *token = strtok(str, delim);
+	char **arg = malloc(sizeof(char *) * 8);
+	int i = 0;
+
+	while (token != NULL)
+	{
+		arg[i] = token;
+		i++;
+		token = strtok(NULL, delim);
+	}
+	arg[i] = "/usr/";
+
+	return (arg);
+}	

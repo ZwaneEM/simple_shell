@@ -7,6 +7,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/wait.h>
+
+
+void exe_command(char **argv, char *erro);
 
 void execmd(char **argv);
 
