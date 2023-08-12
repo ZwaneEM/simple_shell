@@ -6,16 +6,27 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <stdlib.h>
 
+void exe_command(char **av, char *erro);
 
-void exe_command(char **argv, char *erro);
+char **path_arr(char *str);
 
-void execmd(char **argv);
+void final_process(char **comm, char *erroN);
+
+char **arr_make(char *str);
+
+char *get_env(char *str);
 
 void print_str(char *strp);
 
-void prompt(void);
+void exe_command(char **argv, char *errorval);
+
+void print_env(char **env);
+
+int check_comm(char *str);
 
 #endif

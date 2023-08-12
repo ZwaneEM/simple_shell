@@ -1,16 +1,40 @@
 #include "main.h"
 
-void exe_command(char **argv, char *erro)
+/**
+ * exe_command - executes a command
+ * @argv: The command to executes with arguments
+ * @erroval: The error to return
+ * Return: Nothing
+ */
+void exe_command(char **argv, char *erroval)
 {
+	if (argv)
+	{
+		if (execve(argv[0], argv, NULL) == -1)
+		{
+			perror(erroval);
+		}
+	}
+}
 
-//   char *command = NULL;
+void final_process(char **comm, char *erroN)
+{
+	pid_t pid;
 
-    if (argv){
+	if (comm[0] != NULL)
+	{
+		pid = fork();
+		if (pid == -1)
+			perror("process didnt start");
 
-        if (execve(argv[0], argv, NULL) == -1){
-            perror(erro);
-        }
-
-    }
+		if (pid == 0)
+		{
+			exe_command(comm, erroN);
+		}
+		else
+		{
+			wait(NULL);
+		}
+	}
 
 }

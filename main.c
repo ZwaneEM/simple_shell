@@ -1,55 +1,54 @@
 #include "main.h"
 
-char **arr_make(char *str);
-
-extern char **environ;
-
 /**
- *
- *
+ * main - simple shell
+ * @argc: The number of arguments passed to main
+ * @argv: arguments sent to main
+ * @env: Current environment variables
+ * Return: 0 on success
  */
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **env)
 {
-
-	/* declaration and initilization */
-	char *prompt = "#ourshell $ ";
+	char *prompt = getenv("PWD");
 	char *input = NULL;
 	ssize_t nchar;
 	char **av = argv;
-	int ac = argc;
 	size_t len = 0;
-	int i = 0;
-	pid_t pid;
+	int checked;
+	char *command = malloc(sizeof(char) * 50);
 
 	(void)argc;
-
-
-	printf("%s", prompt); /*prompt the user*/
-
-	nchar = getline(&input, &len, stdin);
-	if (nchar == -1)
-		return (0);
-
-	argv = arr_make(input);
-	
-	pid = fork();
-
-	if (pid == -1)
-		return (0);
-
-	
-	if (pid == 0)
+	while (4)
 	{
-		exe_command(argv, av[0]);
+		printf("%s $ ", prompt); /*prompt the user*/
+		nchar = getline(&input, &len, stdin);
+		if (nchar == -1)
+			return (0);
+		argv = arr_make(input);
+		checked = check_comm(argv[0]);
+		if (checked == 3)
+		{
+			print_env(env);
+		}
+		if (checked == 2)
+		{
+			printf("Exiting\n");
+			return (0);
+		}
+		if (checked == 1)
+		{
+			command = get_env(argv[0]);
+			if (command != NULL)
+			{
+				argv[0] = strdup(command);
+				final_process(argv, av[0]);
+			}
+			else
+				perror(av[0]);
+		}
 	}
-	else
-	{
-		wait(NULL);
-	}
-
-	return main(ac, av);
-
-}	
+	return (0);
+}
 
 
 /**
@@ -71,7 +70,6 @@ char **arr_make(char *str)
 		i++;
 		token = strtok(NULL, delim);
 	}
-	arg[i] = "/usr/";
 
 	return (arg);
-}	
+}
