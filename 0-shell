@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+#define MAX_COMMAND_LENGTH 100
+#define MAX_ARGUMENTS 10
+
+int main() {
+    char command[MAX_COMMAND_LENGTH];
+    char *arguments[MAX_ARGUMENTS];
+
+    while (1) {
+        // Prompt for input
+        printf("$ ");
+        fgets(command, MAX_COMMAND_LENGTH, stdin);
+
+        // Remove newline character from the command
+        command[strcspn(command, "\n")] = 0;
+
+        // Split the command into command and arguments
+        char *token = strtok(command, " ");
+        int arg_index = 0;
+
+        while (token != NULL && arg_index < MAX_ARGUMENTS - 1) {
+            arguments[arg_index] = token;
+            token = strtok(NULL, " ");
+            arg_index++;
+        }
+
+        arguments[arg_index] = NULL;
+
+        // Fork a child process to execute the command
+        pid_t pid = fork();
+
+        if (pid < 0) {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        } else if (pid == 0) {
+            // Child process
+            execvp(arguments[0], arguments);
+            perror("execvp");
+            exit(EXIT_FAILURE);
+        } else {
+            // Parent process
+            int status;
+            waitpid(pid, &status, 0);
+
+            if (WIFEXITED(status) && WEXITSTATUS(status) != 0) {
+                printf("Command failed with exit status %d\n", WEXITSTATUS(status));
+            }
+        }
+    }
+
+    return 0;
+}
