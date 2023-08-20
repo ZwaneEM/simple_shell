@@ -22,7 +22,6 @@ int main(int argc, char **argv, char **env)
 	while (4)
 	{
 		printf("%s $ ", prompt);
-
 		signal(SIGINT, clean_mem);
 		nchar = getline(&input, &len, stdin);
 		if (nchar == -1)

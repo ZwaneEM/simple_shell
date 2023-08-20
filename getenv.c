@@ -22,8 +22,6 @@ char *get_env(char *str)
 
 	while (direx != NULL)
 	{
-//		snprintf(true_path, sizeof(true_path), "%s%s", direx, str);
-
 		strcpy(true_path, direx);
 		strcat(true_path, "/");
 		strcat(true_path, str);
