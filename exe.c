@@ -17,6 +17,12 @@ void exe_command(char **argv, char *erroval)
 	}
 }
 
+/**
+ * final_process - waits for the child process to execute
+ * @comm: The command in process
+ * @erroN: An error code to display if anything fails
+ * Return: Nothing
+ */
 void final_process(char **comm, char *erroN)
 {
 	pid_t pid;

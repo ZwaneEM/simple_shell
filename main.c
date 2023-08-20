@@ -1,7 +1,5 @@
 #include "main.h"
 
-char *command;
-char *input = NULL;
 /**
  * main - simple shell
  * @argc: The number of arguments passed to main
@@ -16,13 +14,11 @@ int main(int argc, char **argv, char **env)
 	char *av = getenv("_");
 	size_t len = 0;
 	int checked;
-
+	char *command, *input;
 	(void)argc;
-	argv = NULL;
 	while (4)
 	{
 		printf("%s $ ", prompt);
-		signal(SIGINT, clean_mem);
 		nchar = getline(&input, &len, stdin);
 		if (nchar == -1)
 		{
@@ -32,21 +28,16 @@ int main(int argc, char **argv, char **env)
 		argv = arr_make(input);
 		checked = check_comm(argv[0]);
 		if (checked == 3)
-		{
-			free(argv);
-			print_env(env);			
-		}
+			print_env(env);
 		if (checked == 2)
 		{
 			free(argv);
 			free(input);
-			free(command);
 			return (0);
 		}
 		if (checked == 1)
 		{
 			command = get_env(argv[0]);
-
 			if (command != NULL)
 			{
 				argv[0] = strdup(command);
@@ -70,17 +61,27 @@ int main(int argc, char **argv, char **env)
 char **arr_make(char *str)
 {
 	const char *delim = " \n";
-	char *token = strtok(str, delim);
-	char **arg = malloc(sizeof(char *) * 8);
+	char *_token = strtok(str, delim);
+	char **arg;
 	int i = 0;
+	int ntoken = 0;
 
-	while (token != NULL)
+	while (_token != NULL)
 	{
-		arg[i] = token;
-		i++;
-		token = strtok(NULL, delim);
+		ntoken++;
+		_token = strtok(NULL, delim);
 	}
 
+	_token = strtok(str, delim);
+	arg = malloc(sizeof(char *) * ntoken);
+
+	while (_token != NULL)
+	{
+		arg[i] = malloc(sizeof(char) * strlen(_token));
+		arg[i] = _token;
+		i++;
+		_token = strtok(NULL, delim);
+	}
 	return (arg);
 }
 
@@ -88,11 +89,12 @@ char **arr_make(char *str)
  * clean_mem - clean allocated memory left behind
  * @pron: The integer
  * Return: Nothing
+ *
+ *void clean_mem(int pron)
+ *{
+ *	free(input);
+ *	free(command);
+ *	putchar('\n');
+ *	exit(98);
+ *}
  */
-void clean_mem(int pron)
-{
-	free(input);
-	free(command);
-	putchar('\n');
-	exit(98);
-}

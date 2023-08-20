@@ -12,12 +12,11 @@ char *get_env(char *str)
 	char *pathdup;
 	char *direx;
 	char true_path[1000];
-	
 
 	if (path_enviro == NULL)
 		return (NULL);
 
-	pathdup = strdup(path_enviro);	
+	pathdup = strdup(path_enviro);
 	direx = strtok(pathdup, ":");
 
 	while (direx != NULL)
@@ -30,7 +29,8 @@ char *get_env(char *str)
 		if (access(true_path, X_OK) == 0)
 		{
 			free(pathdup);
-			return strdup(true_path);
+
+			return (strdup(true_path));
 		}
 
 		direx = strtok(NULL, ":");
