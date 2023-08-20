@@ -1,5 +1,7 @@
 #include "main.h"
 
+char *command;
+char *input = NULL;
 /**
  * main - simple shell
  * @argc: The number of arguments passed to main
@@ -10,41 +12,50 @@
 int main(int argc, char **argv, char **env)
 {
 	char *prompt = getenv("PWD");
-	char *input = NULL;
 	ssize_t nchar;
-	char **av = argv;
+	char *av = getenv("_");
 	size_t len = 0;
 	int checked;
-	char *command = malloc(sizeof(char) * 50);
 
 	(void)argc;
+	argv = NULL;
 	while (4)
 	{
-		printf("%s $ ", prompt); /*prompt the user*/
+		printf("%s $ ", prompt);
+
+		signal(SIGINT, clean_mem);
 		nchar = getline(&input, &len, stdin);
 		if (nchar == -1)
+		{
+			free(input);
 			return (0);
+		}
 		argv = arr_make(input);
 		checked = check_comm(argv[0]);
 		if (checked == 3)
 		{
-			print_env(env);
+			free(argv);
+			print_env(env);			
 		}
 		if (checked == 2)
 		{
-			printf("Exiting\n");
+			free(argv);
+			free(input);
+			free(command);
 			return (0);
 		}
 		if (checked == 1)
 		{
 			command = get_env(argv[0]);
+
 			if (command != NULL)
 			{
 				argv[0] = strdup(command);
-				final_process(argv, av[0]);
+				final_process(argv, av);
 			}
 			else
-				perror(av[0]);
+				perror(av);
+			free(argv);
 		}
 	}
 	return (0);
@@ -72,4 +83,17 @@ char **arr_make(char *str)
 	}
 
 	return (arg);
+}
+
+/**
+ * clean_mem - clean allocated memory left behind
+ * @pron: The integer
+ * Return: Nothing
+ */
+void clean_mem(int pron)
+{
+	free(input);
+	free(command);
+	putchar('\n');
+	exit(98);
 }

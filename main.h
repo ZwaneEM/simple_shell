@@ -7,9 +7,12 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <signal.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+
+void clean_mem(int pron);
 
 void exe_command(char **av, char *erro);
 

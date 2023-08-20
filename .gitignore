@@ -1,3 +1,9 @@
 *.swp
 file
 test
+*.swm
+*.swn
+*.swo
+*.out
+*/
+*~

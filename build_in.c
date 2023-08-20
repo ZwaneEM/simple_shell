@@ -13,7 +13,7 @@ int check_comm(char *str)
 	{
 		if (str[1] == 'n')
 		{
-			if (str[3] == '\0')
+			if (str[3] == '\0' && str[2] == 'v')
 			{
 				return (3);
 			}
@@ -25,7 +25,7 @@ int check_comm(char *str)
 
 		if (str[1] == 'x')
 		{
-			if (str[4] == '\0')
+			if (str[4] == '\0' && str[3] == 't' && str[2] == 'i')
 			{
 				return (2);
 			}
