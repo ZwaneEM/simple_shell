@@ -84,17 +84,3 @@ char **arr_make(char *str)
 	}
 	return (arg);
 }
-
-/**
- * clean_mem - clean allocated memory left behind
- * @pron: The integer
- * Return: Nothing
- *
- *void clean_mem(int pron)
- *{
- *	free(input);
- *	free(command);
- *	putchar('\n');
- *	exit(98);
- *}
- */
