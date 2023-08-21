@@ -16,6 +16,9 @@ char *get_env(char *str)
 	if (path_enviro == NULL)
 		return (NULL);
 
+	if (access(str, X_OK) == 0)
+		return (str);
+
 	pathdup = strdup(path_enviro);
 	direx = strtok(pathdup, ":");
 
