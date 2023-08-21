@@ -1,5 +1,9 @@
 #include <stdio.h>
 
+/**
+* main - prints The names of the authors
+* Return: Nothing
+*/
 int main(void)
 {
      printf("Hello World \n");
