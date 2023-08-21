@@ -6,7 +6,7 @@
 */
 int main(void)
 {
-     printf("Hello World \n");
-     printf("Meet Rosina, and Mthokozisi /n");
-     return (0);
+	printf("Hello World \n");
+	printf("Meet Rosina, and Mthokozisi /n");
+	return (0);
 }
