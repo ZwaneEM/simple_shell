@@ -6,6 +6,7 @@
  * @argsv: The args passed
  * @enviro: The environment of the program
  * Return: 0
+ * Mtho and Rosina
  */
 int main(int argsc, char **argsv, char **enviro)
 {
