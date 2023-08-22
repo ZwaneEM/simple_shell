@@ -15,22 +15,18 @@ int main(int argsc, char **argsv, char **enviro)
 	while (1)
 	{
 		printf("ourshell $ ");
+		fgets(path, sizeof(path), stdin)
 
-		if (fgets(path, sizeof(path), stdin) == NULL)
+		int length = strlen(path);
+		if (length > 0 && path[length-1] != '\n')
 		{
-			if (feof(stdin))
-			{
-				break;
-			}
+			printf("Try Again, Command too long.\n");
 
-			perror(argsv[0]);
-			continue;
-		}
-
-		path[strcspn(path, "\n")] = '\0';
-
-		exe_command(path, argsv[0]);
-	}
+			int character;
+			while((character = getchar()) != '\n'
+				&& character != EOF);
+		} else 
+			exit(0);
 
 	return (0);
 }
