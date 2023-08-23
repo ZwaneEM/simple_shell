@@ -2,30 +2,45 @@
 
 /**
  * exe_command - executes a command
- * @pathname: The command to execute
- * @perr: Error to give
+ * @argv: The command to executes with arguments
+ * @erroval: The error to return
  * Return: Nothing
  */
-void exe_command(char *pathname, char *perr)
+void exe_command(char **argv, char *erroval)
 {
-	pid_t pid = fork();
-
-	if (pid == 0)
+	if (argv)
 	{
-		if (execlp(pathname, pathname, NULL) == -1)
+		if (execve(argv[0], argv, NULL) == -1)
 		{
-			perror(perr);
-			exit(EXIT_FAILURE);
+			perror(erroval);
 		}
+	}
+}
 
-	}
-	else if (pid > 0)
+/**
+ * final_process - creates a child process to run execve
+ * @comm: The command to run
+ * @erroN: The error to display
+ * Return: Nothing
+ */
+void final_process(char **comm, char *erroN)
+{
+	pid_t pid;
+
+	if (comm[0] != NULL)
 	{
-		wait(NULL);
+		pid = fork();
+		if (pid == -1)
+			perror("process didnt start");
+
+		if (pid == 0)
+		{
+			exe_command(comm, erroN);
+		}
+		else
+		{
+			wait(NULL);
+		}
 	}
-	else
-	{
-		perror(perr);
-		exit(EXIT_FAILURE);
-	}
+
 }
