@@ -1,11 +1,20 @@
 #include "main.h"
 
 /**
+<<<<<<< HEAD
  * main - simple shell
  * @argc: The number of arguments passed to main
  * @argv: arguments sent to main
  * @env: Current environment variables
  * Return: 0 on success
+=======
+ * main - simple shell in c
+ * @argsc: The number of args passed
+ * @argsv: The args passed
+ * @enviro: The environment of the program
+ * Return: 0
+ * Mtho and Rosina
+>>>>>>> a272672396824118dd03ec4671ef9366e66beeb0
  */
 int main(int argc, char **argv, char **env)
 {
@@ -19,6 +28,7 @@ int main(int argc, char **argv, char **env)
 	(void)argc;
 	while (4)
 	{
+<<<<<<< HEAD
 		printf("%s $ ", prompt); /*prompt the user*/
 		nchar = getline(&input, &len, stdin);
 		if (nchar != -1)
@@ -30,6 +40,12 @@ int main(int argc, char **argv, char **env)
 			print_env(env);
 		}
 		if (checked == 2)
+=======
+		printf("ourshell $ ");
+		fgets(path, sizeof(path), stdin)
+
+		if (fgets(path, sizeof(path), stdin) == NULL)
+>>>>>>> a272672396824118dd03ec4671ef9366e66beeb0
 		{
 			return (0);
 		}
