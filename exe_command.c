@@ -2,8 +2,12 @@
 
 /**
 * exe_command - executes a path or command provided
-* 	by the user.
-* @
+* by the user.
+* @comm: The full path command to executed
+* @comm_path: the array of arguments for command
+* @erroNo: The message to execute if error occur
+*
+* Return: 1 on error and No return on success
 */
 int exe_command(char *comm, char **comm_path, char *erroNo)
 {
@@ -18,7 +22,8 @@ int exe_command(char *comm, char **comm_path, char *erroNo)
 /**
 * check_comm - checks if the command exists in the user system
 *	IF exits it sends it to the exe_command function.
-* @comm_path: the command to work on
+* @comm: The command to check for
+* @comm_path: The array of arguments to command
 * @erroNo: The error message to print.
 */
 void check_comm(char *comm, char **comm_path, char *erroNo)

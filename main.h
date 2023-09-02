@@ -11,33 +11,22 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
-#define BUF_FLUSH -1
+#define BUFFER_FLUSH -1
 #define MAX_ARGU 64
 
 extern char **environ;
 
 
 /**
- * list_t - stores the data typed by the user
+ * struct command - stores the data typed by the user
+ * @comm: the command the user inputs
+ * @len: the length of the command
 */
 typedef struct command
 {
-    char *comm;
-    int len;
+	char *comm;
+	int len;
 } list_t;
-
-/*Hold all the command and arguments*/
-typedef struct user
-{
-    char *comm_input;
-    char path;
-} data_t;
-
-typedef struct tokenize
-{
-    char *command;
-    char *arguments[18];
-} token_t;
 
 /* user.c */
 list_t *prompt_usr(void);
