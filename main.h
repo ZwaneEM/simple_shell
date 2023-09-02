@@ -2,31 +2,60 @@
 #define _MAIN_H_
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include <string.h>
-#include <sys/wait.h>
+#include <unistd.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <signal.h>
+#include <fcntl.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
 
-void exe_command(char **av, char *erro);
+#define BUF_FLUSH -1
+#define MAX_ARGU 64
 
-char **path_arr(char *str);
+extern char **environ;
 
-void final_process(char **comm, char *erroN);
 
-char **arr_make(char *str);
+/**
+ * list_t - stores the data typed by the user
+*/
+typedef struct command
+{
+    char *comm;
+    int len;
+} list_t;
 
-char *get_env(char *str);
+/*Hold all the command and arguments*/
+typedef struct user
+{
+    char *comm_input;
+    char path;
+} data_t;
 
-void print_str(char *strp);
+typedef struct tokenize
+{
+    char *command;
+    char *arguments[18];
+} token_t;
 
-void exe_command(char **argv, char *errorval);
+/* user.c */
+list_t *prompt_usr(void);
+char **command_tokenize(char *arg);
+void sigint_handler(__attribute__((unused))int sig_num);
+char *find_path(char *comm_find);
 
-void print_env(char **env);
+/* shell.c */
+void free_mem(list_t **head);
+void free_arr(char **argsv);
 
-int check_comm(char *str);
+/*exe_command.c*/
+int exe_command(char *comm, char **comm_path, char *erroNo);
+void check_comm(char *comm, char **comm_path, char *erroNo);
+
+/*buildin.c*/
+int buildin_detect(list_t **input);
+
+
 
 #endif
