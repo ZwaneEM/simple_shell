@@ -28,12 +28,10 @@ list_t *prompt_usr(void)
 		return (NULL);
 	}
 	fp = malloc(sizeof(list_t));
-
 	fp->comm = strdup(input_data);
 	fp->len = strlen(input_data);
 
 	free(input_data);
-
 	return (fp);
 }
 
@@ -89,12 +87,10 @@ char *find_path(char *comm_find)
 			free(path_cpy);
 			return (comm);
 		}
-
 		free(comm);
 		_token_path = strtok(NULL, ":");
 	}
 	free(path_cpy);
-
 	comm = strdup(comm_find);
 
 	return (comm);

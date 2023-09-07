@@ -21,7 +21,6 @@ int main(__attribute__((unused))int argsc, char **argsv)
 	while (1)
 	{
 		input = prompt_usr();
-
 		if (input == NULL)
 		{
 			if (isatty(STDIN_FILENO))
@@ -31,18 +30,14 @@ int main(__attribute__((unused))int argsc, char **argsv)
 		if (input->len > 1)
 		{
 			status_ = buildin_detect(&input);
-
 			if (status_ == 1)
 				break;
 			status_ = 0;
-
 			arguv = command_tokenize(input->comm);
 			if (arguv != NULL)
 			{
 				comm_full = find_path(arguv[0]);
-
 				check_comm(comm_full, arguv, argsv[0]);
-
 				free_arr(arguv);
 				free(comm_full);
 				comm_full = NULL;
