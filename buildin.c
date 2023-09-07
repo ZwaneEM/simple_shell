@@ -7,28 +7,23 @@
 */
 int buildin_detect(list_t **input)
 {
-	int sum_char = 0;
-	int i;
 	char *comm = strdup((*input)->comm);
+	int call, i;
 
-	for (i = 0; comm[i] != '\0'; i++)
-	{
-		sum_char += comm[i];
-	}
-	free(comm);
+	for (i = 0; comm[i] != '\n'; i++)
+		;
+	comm[i] = '\0';
 
-	/* checks for env buildin */
-	if (sum_char == 339)
+	call = strcmp(comm, "exit");
+
+	if (call == 0)
 	{
-		for (i = 0; environ[i] != NULL; i++)
-		printf("%s\n", environ[i]);
-	}
-	/* checks for exit buildin */
-	if (sum_char == 452)
-	{
+		free(comm);
 		free_mem(&(*input));
 		return (1);
 	}
+
+	free(comm);
 
 	return (0);
 }

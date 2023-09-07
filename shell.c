@@ -12,7 +12,7 @@ int main(__attribute__((unused))int argsc, char **argsv)
 	list_t *input = NULL;
 	char **arguv = NULL;
 	char *comm_full = NULL;
-	int status_;
+	int status_ = 0;
 
 	signal(SIGINT, sigint_handler);
 	signal(SIGTSTP, SIG_IGN);  /* Ignore Ctrl+Z */
@@ -25,27 +25,30 @@ int main(__attribute__((unused))int argsc, char **argsv)
 
 		if (input == NULL)
 		{
-			putchar('\n');
+			if (isatty(STDIN_FILENO))
+				putchar('\n');
 			break;
 		}
 		if (input->len > 1)
 		{
-		status_ = buildin_detect(&input);
+			status_ = buildin_detect(&input);
 
-		if (status_ == 1)
-			break;
+			if (status_ == 1)
+				break;
+			status_ = 0;
 
-		arguv = command_tokenize(input->comm);
-		/*free_mem(&input);*/
+			arguv = command_tokenize(input->comm);
+			if (arguv != NULL)
+			{
+				comm_full = find_path(arguv[0]);
 
-		comm_full = find_path(arguv[0]);
+				check_comm(comm_full, arguv, argsv[0]);
 
-		check_comm(comm_full, arguv, argsv[0]);
-
-		free_arr(arguv);
-		free(comm_full);
-		comm_full = NULL;
-		free_mem(&input);
+				free_arr(arguv);
+				free(comm_full);
+				comm_full = NULL;
+			}
+			free_mem(&input);
 		}
 		else
 			free_mem(&input);
@@ -62,9 +65,7 @@ int main(__attribute__((unused))int argsc, char **argsv)
 */
 void sigint_handler(__attribute__((unused))int sig_num)
 {
-	char *re_prompt = "ourshell $ ";
-
-	printf("\n%s", re_prompt);
+	write(STDOUT_FILENO, "\n$ ", 3);
 	fflush(stdout);
 }
 
@@ -78,11 +79,10 @@ void sigint_handler(__attribute__((unused))int sig_num)
 char **command_tokenize(char *arg)
 {
 	char *_token;
-	char **args;
+	char **args = NULL;
 	int i;
+	int v = 0;
 	char *arg_cpy = strdup(arg);
-
-	args = malloc(sizeof(char *) * 10);
 
 	_token = strtok(arg_cpy, " \n");
 
@@ -90,11 +90,18 @@ char **command_tokenize(char *arg)
 
 	while (_token != NULL)
 	{
+		if (v == 0)
+		{
+			args = malloc(sizeof(char *) * 10);
+			v += 1;
+		}
+
 		args[i] = strdup(_token);
 		i++;
 		_token = strtok(NULL, " \n");
 	}
-	args[i] = NULL;
+	if (args != NULL)
+		args[i] = NULL;
 
 	free(arg_cpy);
 

@@ -40,11 +40,12 @@ void free_arr(char **argsv);
 
 /*exe_command.c*/
 int exe_command(char *comm, char **comm_path, char *erroNo);
-void check_comm(char *comm, char **comm_path, char *erroNo);
+int check_comm(char *comm, char **comm_path, char *erroNo);
 
 /*buildin.c*/
 int buildin_detect(list_t **input);
 
-
+/*custom.c*/
+int _strcmp(char *cmp1, char *test);
 
 #endif

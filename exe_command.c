@@ -11,9 +11,12 @@
 */
 int exe_command(char *comm, char **comm_path, char *erroNo)
 {
-	if (execve(comm, comm_path, NULL) == -1)
+	if (execve(comm, comm_path, environ) == -1)
 	{
-		perror(erroNo);
+		write(STDERR_FILENO, erroNo, strlen(erroNo));
+		write(STDERR_FILENO, ": 1: ", 5);
+		write(STDERR_FILENO, comm, strlen(comm));
+		write(STDERR_FILENO, ": not found\n", 12);
 	}
 
 	return (1);
@@ -26,7 +29,7 @@ int exe_command(char *comm, char **comm_path, char *erroNo)
 * @comm_path: The array of arguments to command
 * @erroNo: The error message to print.
 */
-void check_comm(char *comm, char **comm_path, char *erroNo)
+int check_comm(char *comm, char **comm_path, char *erroNo)
 {
 	pid_t child;
 	int i;
@@ -42,7 +45,7 @@ void check_comm(char *comm, char **comm_path, char *erroNo)
 		if (child == -1)
 		{
 			perror("Error with fork");
-			return;
+			return (0);
 		}
 		else if (child == 0)
 		{
@@ -55,7 +58,13 @@ void check_comm(char *comm, char **comm_path, char *erroNo)
 	}
 	else
 	{
-		perror(erroNo);
-		return;
+
+		write(STDERR_FILENO, erroNo, strlen(erroNo));
+		write(STDERR_FILENO, ": 1: ", 5);
+		write(STDERR_FILENO, comm, strlen(comm));
+		write(STDERR_FILENO, ": not found\n", 12);
+		return (1);
 	}
+
+	return (0);
 }

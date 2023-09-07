@@ -8,12 +8,12 @@
 */
 list_t *prompt_usr(void)
 {
-	char *prompt = "ourshell $ ";
 	size_t nchar = 0;
 	ssize_t t_nchar;
 	list_t *fp;
 
-	printf("%s", prompt);
+	if (isatty(STDIN_FILENO))
+		write(STDOUT_FILENO, "$ ", 2);
 
 	t_nchar = getline(&input_data, &nchar, stdin);
 	if (t_nchar == -1)
@@ -95,5 +95,7 @@ char *find_path(char *comm_find)
 	}
 	free(path_cpy);
 
-	return (comm_find);
+	comm = strdup(comm_find);
+
+	return (comm);
 }
