@@ -1,5 +1,4 @@
 #include "main.h"
-#include "shell.h"
 
 /**
  * prompt_usr - prompts the user and get the user data
@@ -11,6 +10,7 @@ list_t *prompt_usr(void)
 	size_t nchar = 0;
 	ssize_t t_nchar;
 	list_t *fp;
+	char *input_data = NULL;
 
 	if (isatty(STDIN_FILENO))
 		write(STDOUT_FILENO, "$ ", 2);
