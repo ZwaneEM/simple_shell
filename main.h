@@ -13,6 +13,7 @@
 
 #define BUFFER_FLUSH -1
 #define MAX_ARGU 64
+#define MAX_READ 1000
 
 extern char **environ;
 
@@ -43,9 +44,16 @@ int exe_command(char *comm, char **comm_path, char *erroNo);
 int check_comm(char *comm, char **comm_path, char *erroNo);
 
 /*buildin.c*/
-int buildin_detect(list_t **input);
+void buildin_detect(list_t **input);
+void exit_func(int status_);
+int check_status(char *comm);
 
 /*custom.c*/
 int _strcmp(char *cmp1, char *test);
+
+/*get_line.c*/
+ssize_t _get_line(char **line);
+void non_interactive(char **comm);
+char **non_inttokenize(char *arg);
 
 #endif

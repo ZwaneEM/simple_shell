@@ -11,7 +11,6 @@ int main(__attribute__((unused))int argsc, char **argsv)
 	list_t *input = NULL;
 	char **arguv = NULL;
 	char *comm_full = NULL;
-	int status_ = 0;
 
 	signal(SIGINT, sigint_handler);
 	signal(SIGTSTP, SIG_IGN);  /* Ignore Ctrl+Z */
@@ -27,12 +26,9 @@ int main(__attribute__((unused))int argsc, char **argsv)
 				putchar('\n');
 			break;
 		}
-		if (input->len > 1)
+		if (input->comm[0] != '\n')
 		{
-			status_ = buildin_detect(&input);
-			if (status_ == 1)
-				break;
-			status_ = 0;
+			buildin_detect(&input);
 			arguv = command_tokenize(input->comm);
 			if (arguv != NULL)
 			{
@@ -78,25 +74,31 @@ char **command_tokenize(char *arg)
 	int v = 0;
 	char *arg_cpy = strdup(arg);
 
-	_token = strtok(arg_cpy, " \n");
-
-	i = 0;
-
-	while (_token != NULL)
+	if (isatty(STDIN_FILENO))
 	{
-		if (v == 0)
+		_token = strtok(arg_cpy, " \t\n");
+
+		i = 0;
+
+		while (_token != NULL)
 		{
-			args = malloc(sizeof(char *) * 10);
-			v += 1;
+			if (v == 0)
+			{
+				args = malloc(sizeof(char *) * 10);
+				v += 1;
+			}
+
+			args[i] = strdup(_token);
+			i++;
+			_token = strtok(NULL, " \t\n");
 		}
-
-		args[i] = strdup(_token);
-		i++;
-		_token = strtok(NULL, " \n");
+		if (args != NULL)
+			args[i] = NULL;
 	}
-	if (args != NULL)
-		args[i] = NULL;
-
+	else
+	{
+		non_interactive(&arg_cpy);
+	}
 	free(arg_cpy);
 
 	return (args);

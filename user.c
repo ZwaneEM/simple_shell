@@ -7,7 +7,6 @@
 */
 list_t *prompt_usr(void)
 {
-	size_t nchar = 0;
 	ssize_t t_nchar;
 	list_t *fp;
 	char *input_data = NULL;
@@ -15,14 +14,9 @@ list_t *prompt_usr(void)
 	if (isatty(STDIN_FILENO))
 		write(STDOUT_FILENO, "$ ", 2);
 
-	t_nchar = getline(&input_data, &nchar, stdin);
+	t_nchar = _get_line(&input_data);
 	if (t_nchar == -1)
 	{
-		if (feof(stdin))/* looks for when a user types CTRL D*/
-		{
-			free(input_data); /*free the input*/
-			return (NULL);
-		}
 		free(input_data);
 		perror("Error");
 		return (NULL);
@@ -61,22 +55,14 @@ char *find_path(char *comm_find)
 	int len_comm;
 	int token_len;
 
-	if (stat(comm_find, &fp_buf) == 0)
-	{
-		comm = strdup(comm_find);
-		return (comm);
-	}
-
 	path_cpy = strdup(path);
 	len_comm = strlen(comm_find);
-
 	_token_path = strtok(path_cpy, ":");
 
-	while (_token_path != NULL)
+	while (_token_path != NULL && comm_find[0] != '.')
 	{
 		token_len = strlen(_token_path);
 		comm = malloc(sizeof(char) * (len_comm + token_len + 2));
-
 		strcpy(comm, _token_path);
 		strcat(comm, "/");
 		strcat(comm, comm_find);
@@ -91,6 +77,14 @@ char *find_path(char *comm_find)
 		_token_path = strtok(NULL, ":");
 	}
 	free(path_cpy);
+
+	if (access(comm_find, X_OK) == 0)
+	{
+		comm = strdup(comm_find);
+		printf("%s\n", comm);
+		return (comm);
+	}
+
 	comm = strdup(comm_find);
 
 	return (comm);

@@ -17,6 +17,7 @@ int exe_command(char *comm, char **comm_path, char *erroNo)
 		write(STDERR_FILENO, ": 1: ", 5);
 		write(STDERR_FILENO, comm, strlen(comm));
 		write(STDERR_FILENO, ": not found\n", 12);
+		exit(127);
 	}
 
 	return (1);
@@ -28,6 +29,7 @@ int exe_command(char *comm, char **comm_path, char *erroNo)
 * @comm: The command to check for
 * @comm_path: The array of arguments to command
 * @erroNo: The error message to print.
+* Return: 0 on success or 1 on failure
 */
 int check_comm(char *comm, char **comm_path, char *erroNo)
 {
@@ -45,7 +47,7 @@ int check_comm(char *comm, char **comm_path, char *erroNo)
 		if (child == -1)
 		{
 			perror("Error with fork");
-			return (0);
+			return (1);
 		}
 		else if (child == 0)
 		{
