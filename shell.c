@@ -10,6 +10,7 @@ int main(__attribute__((unused))int argsc, char **argsv)
 {
 	list_t *input = NULL;
 	char **arguv = NULL;
+	int build = 0;
 	char *comm_full = NULL;
 
 	signal(SIGINT, sigint_handler);
@@ -28,7 +29,9 @@ int main(__attribute__((unused))int argsc, char **argsv)
 		}
 		if (input->comm[0] != '\n')
 		{
-			buildin_detect(&input);
+			build = buildin_detect(&input);
+			if (build == 0)
+			{
 			arguv = command_tokenize(input->comm);
 			if (arguv != NULL)
 			{
@@ -37,6 +40,7 @@ int main(__attribute__((unused))int argsc, char **argsv)
 				free_arr(arguv);
 				free(comm_full);
 				comm_full = NULL;
+			}
 			}
 			free_mem(&input);
 		}

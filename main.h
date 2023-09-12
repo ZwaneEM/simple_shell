@@ -44,7 +44,7 @@ int exe_command(char *comm, char **comm_path, char *erroNo);
 int check_comm(char *comm, char **comm_path, char *erroNo);
 
 /*buildin.c*/
-void buildin_detect(list_t **input);
+int buildin_detect(list_t **input);
 void exit_func(int status_);
 int check_status(char *comm);
 
@@ -55,5 +55,8 @@ int _strcmp(char *cmp1, char *test);
 ssize_t _get_line(char **line);
 void non_interactive(char **comm);
 char **non_inttokenize(char *arg);
+
+/*buildin2.c*/
+void buildin_detect_2(char **comm);
 
 #endif

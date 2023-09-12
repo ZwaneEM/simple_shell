@@ -5,27 +5,37 @@
  * @input: The input from user
  * Return: Nothing
 */
-void buildin_detect(list_t **input)
+int buildin_detect(list_t **input)
 {
 	char *comm = strdup((*input)->comm);
 	int call;
-	int status_ = 98;
+	int status_ = 0;
 	char *_token;
 	char *testc = strdup(comm);
 
 	_token = strtok(testc, " ");
 	call = strcmp(_token, "exit");
-	free(testc);
 
 	if (call == 0)
 	{
 		status_ = check_status(comm);
 		free(comm);
+		free(testc);
 		free_mem(&(*input));
 		exit(status_);
 	}
 
+	if (strcmp(_token, "unsetenv") == 0 || strcmp(_token, "setenv") == 0)
+	{
+		buildin_detect_2(&comm);
+		free(comm);
+		free(testc);
+		return (1);
+	}
+
 	free(comm);
+	free(testc);
+	return (0);
 }
 
 /**

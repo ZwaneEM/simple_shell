@@ -81,7 +81,6 @@ char *find_path(char *comm_find)
 	if (access(comm_find, X_OK) == 0)
 	{
 		comm = strdup(comm_find);
-		printf("%s\n", comm);
 		return (comm);
 	}
 
