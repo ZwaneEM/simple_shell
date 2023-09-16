@@ -135,8 +135,8 @@ void check_sep_op(list_t **input)
 		{
 			exe_sep_op(arg_comm);
 			free_arr(arg_comm);
-			v++;
 		}
+		v++;
 	}
 	free_arr(comm);
 	free(comm_cpy);
