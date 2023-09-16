@@ -48,3 +48,136 @@ void buildin_detect_2(char **comm)
 	}
 	free(comm_cpy);
 }
+
+/**
+ * buildin_detect_3 - detects and processes the buildin cd
+ * @comm: The command to process
+ * Return: Nothing
+ */
+void buildin_detect_3(char **comm)
+{
+	char *comm_cpy = strdup(*comm);/*dynamically allocated*/
+	char *comm_cpy2 = strdup(*comm);
+	char *_token, *new_wd;
+	int i;
+	char *home = getenv("HOME");
+	char *old_wd = getenv("PWD");
+
+	_token = strtok(comm_cpy, " ");
+
+	for (i = 0; _token != NULL; i++)
+		_token = strtok(NULL, " "); /* gets the number of arguments + command*/
+
+	_token = strtok(comm_cpy2, " ");
+	_token = strtok(NULL, " ");
+
+	if (i > 2)
+	{
+		write(STDERR_FILENO, "cd: too many arguments\n", 23);
+		free(comm_cpy);
+		return;
+	}
+	else if (i == 1 || strcmp(_token, "~") == 0)
+	{
+		_handle_change(old_wd, &home);
+	}
+	else if (i == 2)
+	{
+		new_wd = strdup(_token);
+		_handle_change(old_wd, &new_wd);
+		free(new_wd);
+	}
+	free(comm_cpy);
+	free(comm_cpy2);
+}
+
+/**
+ * _handle_change - handles the switching of the wd
+ * @old_wd: old working directory
+ * @new_wd: new working directory to change to
+ * Return: Nothing.
+ */
+void _handle_change(char *old_wd, char **new_wd)
+{
+	int ret, sig, sig1;
+	char pwd[1000];
+	char *oldPWD = getenv("OLDPWD");
+	char *filename = getenv("_");
+
+	if (strcmp((*new_wd), "-") == 0)
+	{
+		handle_special(old_wd, oldPWD);
+		return;
+	}
+
+	ret = chdir(*new_wd);
+	if (ret == -1)
+	{
+		write(STDERR_FILENO, filename, strlen(filename));
+		write(STDERR_FILENO, ": 1: cd: ", 9);
+		perror("");
+		return;
+	}
+
+	sig = setenv("OLDPWD", old_wd, 1);
+	if (sig == -1)
+	{
+		perror("setenv() error");
+		return;
+	}
+
+	if (getcwd(pwd, sizeof(pwd)) == NULL)
+		perror("getcwd() error");
+
+	sig1 = setenv("PWD", pwd, 1);
+	if (sig1 == -1)
+	{
+		perror("setenv() errror");
+		return;
+	}
+}
+
+/**
+ * handle_special - handles the execution of -
+ * special char that means old pwd
+ * @old_wd: the old path
+ * @new_: new path to move in to
+ * Return: Nothing
+ */
+void handle_special(char *old_wd, char *new_)
+{
+	int ret, sig, sig1;
+	char pwd[1000];
+	char *filename = getenv("_");
+
+	if (new_ == NULL)
+		return;
+
+	ret = chdir(new_);
+	if (ret == -1)
+	{
+		write(STDERR_FILENO, filename, strlen(filename));
+		write(STDERR_FILENO, ": 1: cd: ", 9);
+		perror("");
+		return;
+	}
+
+	sig = setenv("OLDPWD", old_wd, 1);
+	if (sig == -1)
+	{
+		perror("setenv() error");
+		return;
+	}
+
+	if (getcwd(pwd, sizeof(pwd)) == NULL)
+		perror("getcwd() error");
+
+	sig1 = setenv("PWD", pwd, 1);
+	if (sig1 == -1)
+	{
+		perror("setenv() errror");
+		return;
+	}
+	write(STDOUT_FILENO, new_, strlen(new_));
+	write(STDOUT_FILENO, "\n", 1);
+}

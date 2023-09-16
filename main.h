@@ -14,6 +14,7 @@
 #define BUFFER_FLUSH -1
 #define MAX_ARGU 64
 #define MAX_READ 1000
+#define MAX_PATH 100
 
 extern char **environ;
 
@@ -32,12 +33,16 @@ typedef struct command
 /* user.c */
 list_t *prompt_usr(void);
 char **command_tokenize(char *arg);
-void sigint_handler(__attribute__((unused))int sig_num);
 char *find_path(char *comm_find);
+void check_sep_op(list_t **input);
+void exe_sep_op(char **comm);
+
 
 /* shell.c */
 void free_mem(list_t **head);
 void free_arr(char **argsv);
+void sigint_handler(__attribute__((unused))int sig_num);
+
 
 /*exe_command.c*/
 int exe_command(char *comm, char **comm_path, char *erroNo);
@@ -58,5 +63,8 @@ char **non_inttokenize(char *arg);
 
 /*buildin2.c*/
 void buildin_detect_2(char **comm);
+void buildin_detect_3(char **comm);
+void _handle_change(char *old_wd, char **new_wd);
+void handle_special(char *old_wd, char *new_);
 
 #endif

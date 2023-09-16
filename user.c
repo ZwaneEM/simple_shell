@@ -26,6 +26,9 @@ list_t *prompt_usr(void)
 	fp->len = strlen(input_data);
 
 	free(input_data);
+
+	check_sep_op(&fp);
+
 	return (fp);
 }
 
@@ -71,20 +74,89 @@ char *find_path(char *comm_find)
 		if (stat(comm, &fp_buf) == 0)
 		{
 			free(path_cpy);
+			path_cpy = NULL;
 			return (comm);
 		}
 		free(comm);
 		_token_path = strtok(NULL, ":");
 	}
 	free(path_cpy);
+	path_cpy = NULL;
 
 	if (access(comm_find, X_OK) == 0)
 	{
 		comm = strdup(comm_find);
 		return (comm);
 	}
-
 	comm = strdup(comm_find);
 
 	return (comm);
+}
+
+/**
+ * check_sep_op - checks and executes command separated by
+ * by ; command separator
+ * @input: structure containing the command
+ * Return: nothing
+ *
+ */
+void check_sep_op(list_t **input)
+{
+	char *comm_cpy = strdup((*input)->comm), *_token;
+	int i = 0, v = 0;
+	char **comm = NULL, **arg_comm = NULL;
+
+	if (strchr(comm_cpy, ';') == NULL)
+	{
+		free(comm_cpy);
+		return;
+	}
+	_token = strtok(comm_cpy, ";\n");
+	while (_token != NULL)
+	{
+		if (comm == NULL)
+			comm = malloc(sizeof(char *) * 10);
+		if (comm == NULL)
+		{
+			free(comm_cpy);
+			perror("Error");
+			return;
+		}
+		comm[i] = strdup(_token);
+		i++;
+		_token = strtok(NULL, ";\n");
+	}
+	if (comm != NULL)
+		comm[i] = NULL;
+	while (comm[v] != NULL)
+	{
+		arg_comm = command_tokenize(comm[v]);
+		if (arg_comm != NULL)
+		{
+			exe_sep_op(arg_comm);
+			free_arr(arg_comm);
+			v++;
+		}
+	}
+	free_arr(comm);
+	free(comm_cpy);
+	free((*input)->comm);
+	(*input)->comm = strdup("\n");
+}
+
+/**
+ * exe_sep_op - executes the command passed by the
+ * check sep function.
+ * @comm: The command to execute
+ * Return: Nothing
+ */
+void exe_sep_op(char **comm)
+{
+	char *comm_full;
+	char *erroNo = getenv("_");
+
+	comm_full = find_path(comm[0]);
+	check_comm(comm_full, comm, erroNo);
+	free(comm_full);
+	comm_full = NULL;
 }

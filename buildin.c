@@ -33,6 +33,14 @@ int buildin_detect(list_t **input)
 		return (1);
 	}
 
+	if (strcmp(_token, "cd") == 0)
+	{
+		buildin_detect_3(&comm);
+		free(comm);
+		free(testc);
+		return (1);
+	}
+
 	free(comm);
 	free(testc);
 	return (0);
