@@ -15,8 +15,6 @@ int main(__attribute__((unused))int argsc, char **argsv)
 
 	signal(SIGINT, sigint_handler);
 	signal(SIGTSTP, SIG_IGN);  /* Ignore Ctrl+Z */
-	signal(SIGQUIT, SIG_IGN);  /* Ignore Ctrl+\ (SIGQUIT) */
-	signal(SIGTERM, SIG_IGN);  /* Ignore SIGTERM */
 
 	while (1)
 	{
