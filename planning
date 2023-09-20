@@ -29,6 +29,19 @@ Requirements:
 
 ******************************************************************************
 
-# Step 1 :
+## Implementing the alias buildin command
 
-	try changing the current working directory
+
+Usage: alias [name[='value'] ...]
+
+eg. alias name=cd name=value name=ls
+
+
+-> check if the first word is alias
+
+# initilization of the shortcuts
+
+-> tokenize the whole command into a double pointer type of strings
+-> we the check if the following strings are strings with a = sign
+-> the if they are, we then take them string by string a append them in a file
+
