@@ -4,7 +4,7 @@
  * buildin_detect_2 - handles buildin unsetenv and
  * setenv
  * @comm: The command inputed by the user
- * Return: Nothing
+ * Return: Nothing.
  */
 void buildin_detect_2(char **comm)
 {
