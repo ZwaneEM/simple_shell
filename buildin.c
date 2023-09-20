@@ -3,7 +3,7 @@
 /**
  * buildin_detect - detects exit and env build in
  * @input: The input from user
- * Return: Nothing
+ * Return: Nothing.
 */
 int buildin_detect(list_t **input)
 {
