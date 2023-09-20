@@ -4,7 +4,7 @@
  * main - Entry point for shell
  * @argsc: The number of arguments passed to the main function
  * @argsv: The arguments passed in to main function
- * Return: 0 on success / -1 on failure
+ * Return: 0 on success / -1 on failure.
 */
 int main(__attribute__((unused))int argsc, char **argsv)
 {
