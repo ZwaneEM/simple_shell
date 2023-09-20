@@ -4,7 +4,7 @@
 * _get_line - reads a line from the standard input
 *	and writes it into line pointer
 * @line: The pointer to store the line read in
-* Return: The actual number of char read
+* Return: The actual number of char read.
 */
 ssize_t _get_line(char **line)
 {
