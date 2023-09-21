@@ -27,7 +27,6 @@ int main(__attribute__((unused))int argsc, char **argsv)
 		}
 		if (input->comm[0] != '\n')
 		{
-			build = buildin_detect(&input);
 			if (build == 0)
 			{
 				arguv = command_tokenize(input->comm);
