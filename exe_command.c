@@ -7,7 +7,7 @@
 * @comm_path: the array of arguments for command
 * @erroNo: The message to execute if error occur
 *
-* Return: 1 on error and No return on success.
+* Return: 1 on error and No return on success
 */
 int exe_command(char *comm, char **comm_path, char *erroNo)
 {

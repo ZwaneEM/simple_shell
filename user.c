@@ -3,7 +3,7 @@
 /**
  * prompt_usr - prompts the user and get the user data
  * after being inputed in the stdin
- * Return: A pointer to the typed data or NULL if failed.
+ * Return: A pointer to the typed data or NULL if failed
 */
 list_t *prompt_usr(void)
 {

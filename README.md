@@ -8,7 +8,7 @@ Write a beautiful code that passes the Betty checks
 
 1. Simple shell 0.1
 
-Write a UNIX command line interpreter..
+Write a UNIX command line interpreter.
 
     Usage: simple_shell
 

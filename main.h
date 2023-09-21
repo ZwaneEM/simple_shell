@@ -22,7 +22,7 @@ extern char **environ;
 /**
  * struct command - stores the data typed by the user
  * @comm: the command the user inputs
- * @len: the length of the command.
+ * @len: the length of the command
 */
 typedef struct command
 {

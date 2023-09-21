@@ -4,7 +4,7 @@
  * _strcmp - compares two strings together
  * @cmp1: The first string to compare
  * @test: The second string to compare
- * Return: -1 when strings dont match/ 0 on match.
+ * Return: -1 when strings dont match/ 0 on match
  */
 int _strcmp(char *cmp1, char *test)
 {
