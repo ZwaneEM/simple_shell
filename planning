@@ -17,7 +17,7 @@ Recommended functions:
 				-> on success zero is returned.
 				-> on error -1 is returned
 
-******************************************************************************
+*****************************************************************************
 
 Requirements:
 
@@ -27,7 +27,7 @@ Requirements:
  -> handle the command (cd -) - (cd OLDPWD)
  -> update the PWD when changing the directory
 
-******************************************************************************
+*****************************************************************************
 
 ## Implementing the alias buildin command
 
