@@ -30,22 +30,22 @@ int main(__attribute__((unused))int argsc, char **argsv)
 			build = buildin_detect(&input);
 			if (build == 0)
 			{
-			arguv = command_tokenize(input->comm);
-			if (arguv != NULL)
-			{
-				comm_full = find_path(arguv[0]);
-				check_comm(comm_full, arguv, argsv[0]);
-				free_arr(arguv);
-				free(comm_full);
-				comm_full = NULL;
-			}
+				arguv = command_tokenize(input->comm);
+				if (arguv != NULL)
+				{
+					comm_full = find_path(arguv[0]);
+					check_comm(comm_full, arguv, argsv[0]);
+					free_arr(arguv);
+					free(comm_full);
+					comm_full = NULL;
+				}
 			}
 			free_mem(&input);
 		}
 		else
 			free_mem(&input);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 /**

@@ -34,7 +34,7 @@ ssize_t _get_line(char **line)
 		free(*line);
 		if (isatty(STDIN_FILENO))
 			putchar('\n');
-		exit(35);
+		exit(0);
 	}
 	if (nread > size)
 	{

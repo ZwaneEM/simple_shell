@@ -68,5 +68,8 @@ int check_comm(char *comm, char **comm_path, char *erroNo)
 		return (1);
 	}
 
+	if (isatty(STDIN_FILENO))
+		return (0);
+
 	return (0);
 }
